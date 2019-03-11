@@ -49,6 +49,10 @@ html {
 .square.top{
     border-bottom-style:solid;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> create style when player win and create validation when the game is draw
 .square.left{
     clear:both;border-right-style:solid;
 }
