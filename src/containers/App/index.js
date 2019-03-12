@@ -11,6 +11,7 @@ const styles = {
     top: '10%',
     left: '20%',
     fontWeight: 'bold',
+    fontSize: '16px',
   },
   divReset: {
     position: 'absolute',
@@ -27,34 +28,6 @@ const styles = {
     color: '#484848',
     fontWeight: 'bold',
   },
-  scoreO: {
-    position: 'absolute',
-    top: '125%',
-    left: '15%',
-    width: '25%',
-    height: '25%',
-  },
-  textScore: {
-    position: 'absolute',
-    top: '115%',
-    left: '41%',
-    fontSize: '16px',
-    color: '#484848',
-    fontWeight: 'bold'
-  },
-  scoreX: {
-    position: 'absolute',
-    fontSize: '6.1em',
-    top: '-17%',
-    left: '181%',
-  },
-  score: {
-    position: 'relative',
-    top: '-43%',
-    left: '120px',
-    fontSize: '22px',
-    color: '#727272'
-  }
 }
 
 class App extends React.Component {
@@ -64,9 +37,6 @@ class App extends React.Component {
       jumpTurn: 0,
       turnX: true,
       valuePlayer: Array(9).fill(null),
-      playerState: '',
-      modal: false,
-      winO: 0,
     };
     this.finishedGame = false;
     this.winnerCounter = 0;
@@ -121,13 +91,13 @@ class App extends React.Component {
     this.styleFunction(false);
   }
 
-  p = () => {
+  openModalState = () => {
     const winnerGame = this.whoWin(this.state.valuePlayer);
     if (winnerGame) {
-      return (<ModalPop openModal={true} onClick={false} winner={`WINNER ${winnerGame}`} />)
+      return (<ModalPop openModal={true} messageGame={'WINNER'} winner={winnerGame} />)
     }
     if (this.state.jumpTurn === 9) {
-      return (<ModalPop openModal={true} onClick={false} winner={'DRAW'} />)
+      return (<ModalPop openModal={true} messageGame={'DRAW'} />)
     }
 
   }
@@ -137,10 +107,10 @@ class App extends React.Component {
       for (let i = 0; i < value.length; i++) {
         const circle = value[i];
         if (!resetGame && this.finishedGame) {
-          document.getElementById(circle).classList.add("erika");
+          document.getElementById(circle).classList.add("winDivP");
         }
         if (!this.finishedGame) {
-          document.getElementById(circle).classList.remove("erika");
+          document.getElementById(circle).classList.remove("winDivP");
         }
       }
       return value;
@@ -148,7 +118,6 @@ class App extends React.Component {
   }
 
   resetGame = () => {
-    alert('hola');
     this.setState({
       valuePlayer: Array(9).fill(null),
       jumpTurn: 0,
@@ -166,12 +135,7 @@ class App extends React.Component {
     if (winner) {
       this.finishedGame = true;
       this.winnerCounter++;
-      playerWin = "Winner" + this.winnerCounter;
-    } else if (this.state.jumpTurn === 9) {
-      playerWin = "the game is DRAW";
-      this.p()
-    }
-    else {
+    } else {
       status = "CURRENT PLAYER: " + (this.state.turnX ? "X" : "O");
     }
     return (
@@ -188,7 +152,7 @@ class App extends React.Component {
             value={this.state.valuePlayer}
             onClick={id => this.moveClick(id)}
           />
-          {this.p()}
+          {this.openModalState()}
           {playerWin}
         </div>
       </div>
